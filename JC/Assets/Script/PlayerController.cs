@@ -64,4 +64,15 @@ public class PlayerController : MonoBehaviour
         }
         
     }
+
+    private void OnTriggerExit(Collider other)
+    {
+        switch (other.gameObject.tag)
+        {
+            case "CamTrigger":
+                camB.SetActive(false);
+                break;
+        }
+
+    }
 }
