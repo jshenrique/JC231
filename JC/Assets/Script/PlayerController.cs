@@ -15,6 +15,9 @@ public class PlayerController : MonoBehaviour
     private Animator anim;
     private bool isWalk;
 
+    [Header("Camera")]
+    public GameObject camB;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -49,7 +52,16 @@ public class PlayerController : MonoBehaviour
         controller.Move(direction * movementSpeed * Time.deltaTime);
 
         anim.SetBool("isWalk", isWalk);
+    }
 
-
+    private void OnTriggerEnter(Collider other)
+    {
+        switch (other.gameObject.tag)
+        {
+            case "CamTrigger":
+                camB.SetActive(true); 
+                break;
+        }
+        
     }
 }
