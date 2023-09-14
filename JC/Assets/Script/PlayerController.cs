@@ -17,6 +17,9 @@ public class PlayerController : MonoBehaviour
 
     public ParticleSystem fxAttack;
 
+    float horizontal;
+    float vertical;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -27,30 +30,49 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float horizontal = Input.GetAxis("Horizontal");
-        float vertical = Input.GetAxis("Vertical");
+        Inputs();
+        MoveCharacter();
+        UpdateAnimator();
+
+    }
+
+    void Inputs()
+    {
+        horizontal = Input.GetAxis("Horizontal");
+        vertical = Input.GetAxis("Vertical");
 
         if (Input.GetButtonDown("Fire1"))
         {
-            anim.SetTrigger("Attack");
-            fxAttack.Emit(1);
+            Attack();
         }
+    }
 
+    void MoveCharacter()
+    {
         direction = new Vector3(horizontal, 0f, vertical).normalized;
 
-        if(direction.magnitude > 0.1f)
+        if (direction.magnitude > 0.1f)
         {
             float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.Euler(0, targetAngle, 0);
             isWalk = true;
         }
-        else 
+        else
         {
             isWalk = false;
         }
 
         controller.Move(direction * movementSpeed * Time.deltaTime);
+    }
 
+    void Attack()
+    {
+        anim.SetTrigger("Attack");
+        fxAttack.Emit(1);
+    }
+
+    void UpdateAnimator()
+    {
         anim.SetBool("isWalk", isWalk);
     }
 }
