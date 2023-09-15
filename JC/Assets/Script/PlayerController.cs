@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour
     private bool isWalk;
 
     public ParticleSystem fxAttack;
+    private bool isAtack;
 
     float horizontal;
     float vertical;
@@ -41,7 +42,7 @@ public class PlayerController : MonoBehaviour
         horizontal = Input.GetAxis("Horizontal");
         vertical = Input.GetAxis("Vertical");
 
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Fire1") && isAtack == false)
         {
             Attack();
         }
@@ -68,6 +69,17 @@ public class PlayerController : MonoBehaviour
     void Attack()
     {
         anim.SetTrigger("Attack");
+        Invoke(nameof(ParticulaAttack), 0.3f);
+        isAtack = true;
+    }
+
+    void AtackIsDone()
+    {
+        isAtack = false;
+    }
+
+    void ParticulaAttack()
+    {
         fxAttack.Emit(1);
     }
 
