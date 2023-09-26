@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -15,8 +13,15 @@ public class PlayerController : MonoBehaviour
     private Animator anim;
     private bool isWalk;
 
+    // Atack
     public ParticleSystem fxAttack;
     private bool isAtack;
+    public Transform hitBox;
+    [Range(0.2f, 1f)]
+    public float hitRange = 0.5f;
+    public Collider[] hitInfo;
+    public LayerMask hitMask; // oq posso atingir
+    public int amountDmg;
 
     float horizontal;
     float vertical;
@@ -71,6 +76,21 @@ public class PlayerController : MonoBehaviour
         anim.SetTrigger("Attack");
         Invoke(nameof(ParticulaAttack), 0.3f);
         isAtack = true;
+
+        hitInfo = Physics.OverlapSphere(hitBox.position, hitRange, hitMask);
+
+        foreach (Collider c in hitInfo)
+        {
+            c.gameObject.SendMessage("GetHit", amountDmg, SendMessageOptions.DontRequireReceiver);
+        }
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        if (hitBox != null)
+        {
+            Gizmos.DrawSphere(hitBox.position, hitRange);
+        }
     }
 
     void AtackIsDone()
