@@ -40,6 +40,13 @@ public class PlayerController : MonoBehaviour
         MoveCharacter();
         UpdateAnimator();
 
+        for(int i = 0; i < 19; i++)
+        {
+            if (Input.GetKeyDown("joystick button " + i.ToString() ))
+            { 
+                Debug.Log("joystick 1 button" + i.ToString());
+            }
+        }
     }
 
     void Inputs()
